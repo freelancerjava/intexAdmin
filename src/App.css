@@ -1,0 +1,11 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.ContainerApp{
+    width: 1365px;
+    margin: 0 auto;
+    background: #fff;
+    max-width: 100%;
+}

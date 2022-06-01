@@ -1,0 +1,25 @@
+.p-add{
+    width: 50%;
+    /* border:1px solid; */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 2rem 1rem 0rem;
+}
+.p-add button{
+    width: 45%;
+    height: 100%;
+    background:#009398;
+    border:none;
+    border-radius: 30px;
+    padding: 1.2rem;
+    color:#fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 200;
+    box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+.p-add button:hover{
+    opacity: 0.9;
+}

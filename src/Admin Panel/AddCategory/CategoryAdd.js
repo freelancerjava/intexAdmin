@@ -1,0 +1,108 @@
+import React, { useState } from "react";
+import Modal from "react-modal";
+import axios from "../../api/axios";
+import { useDispatch } from "react-redux";
+import { add_category_one } from "../../Store/action";
+
+// styling
+import "./CategoryAdd.css";
+
+const CATEGORY_URL = "/category/";
+
+const CategoryAdd = () => {
+   const dispatch = useDispatch();
+
+   const [category, setCategory] = useState(false);
+	
+   const [name, setName] = useState("");
+   const [nameUz, setNameUz] = useState("");
+   const [nameRu, setNameRu] = useState("");
+
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+      const token = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+      const config = {
+         headers: { Authorization: `Bearer ${token}` },
+      };
+      const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+	   axios.post(CATEGORY_URL,
+		   { categoryname: name, category_uz: nameUz, category_ru: nameRu },
+		   config)
+         .then(function (response) {
+            console.log(response);
+            dispatch(add_category_one({categoryname: name, category_uz: nameUz, category_ru: nameRu }));
+         })
+         .catch(function (error) {
+            console.log(error);
+         });
+
+      setCategory(false);
+   };
+   // const token =JSON.parse(window.localStorage.getItem("AuthToken")).access
+   // axios.get(CATEGORY_URL, {
+   //     headers: {
+   //         'Authorization': `Bearer ${token}`
+   //     }
+   //     })
+   //     .then((res) => {
+   //      const getDatas = res.data
+   //     console.log(getDatas);
+   //     })
+   //     .catch((error) => {
+   //         console.error(error)
+   //       })
+   return (
+      <div className="c-add">
+         <button onClick={() => setCategory(true)}>+ Добавить категории</button>
+         <Modal
+            className="Category_Modal"
+            isOpen={category}
+            appElement={document.getElementById("root") || undefined}
+            style={{
+               overlay: {
+                  position: "fixed",
+                  left: "0",
+                  top: "0",
+                  bottom: "0",
+                  right: "0",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: " rgb(0,0,0,0.5)",
+               },
+               content: {
+                  position: "absolute",
+                  top: "250px",
+                  left: "300px",
+                  right: "290px",
+                  bottom: "250px",
+                  border: "1px solid #ccc",
+                  background: "#fff",
+                  overflow: "hidden",
+                  WebkitOverflowScrolling: "touch",
+                  borderRadius: "25px",
+                  outline: "none",
+                  padding: "20px",
+				   boxShadow: "-1px 6px 8px 0px rgba(34, 60, 80, 0.2)",
+				   display: "flex",
+				   justifyContent: "center",
+				   alignItems: "center",
+               },
+            }}
+         >
+            <div className="Modal_navbar">
+               								<h2>Добавить категории</h2>
+               			<i className="fa-solid fa-close btn-closeIcon fa-3x " onClick={() => setCategory(false)}></i>
+				<form onSubmit={handleSubmit} className="ModalForm">
+				  <input type="text" placeholder="Category Name" onChange={(e) => setName(e.target.value)} /> 
+				  <br />
+                  <input type="text" placeholder="Category uz" onChange={(e) => setNameUz(e.target.value)} />
+                  <input type="text" placeholder="Category ru" onChange={(e) => setNameRu(e.target.value)} />
+                  <button className="CategoryBtn">Добавить</button>
+               </form>
+            </div>
+         </Modal>
+      </div>
+   );
+};
+
+export default CategoryAdd;
