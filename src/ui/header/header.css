@@ -1,0 +1,131 @@
+*{
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  .Container{
+    height: auto;
+  }
+  .header{
+    width: 1540px;
+    height: 400px;
+  }
+  .navbar{
+    width: 1540px;
+    height: 75px;
+    display: flex;
+    background-color: #00979C;
+    color: white;
+    position: fixed;
+    z-index: 100000;
+    box-shadow: -1px 23px 8px 0px rgba(34, 60, 80, 0.2);
+    
+  }
+  
+  .nav_ul{
+    display: flex;
+    justify-content:space-around;
+    font-size: 21px;
+    list-style: none;
+    text-decoration: none;
+    margin-left: 230px;
+  }
+  .nav_li{
+    display: flex;
+    justify-content:space-around;
+    list-style: none;
+    margin-left: 40px;
+    margin-top:-6px;
+    font-style: bold;
+  }
+  .nav_li:hover{
+    cursor: pointer;
+  }
+  
+  .nav_p{
+    margin-left: 270px;
+    margin-top: 21px;
+    font-size: 18px;
+  }
+  .nav_p:hover{
+    cursor: pointer;
+  }
+  
+  .header_img{
+    width: 26px;
+    height: 26px;
+    margin-top: 22px;
+    margin-left: 20px;
+    transition: 0.1s;
+    transition-duration: 0.3s;
+    transition-delay: 0.3s;
+  
+  
+  }
+  .header_img:hover{
+     cursor: pointer;
+     /* margin-top: 17px;
+     transition: 0.3s;
+     transition-duration: 0.2s; */
+  }
+  .header_img1{
+    width: 49px;
+    height: 48px;
+    margin-top: 15px;
+    margin-left: 0px;
+    transition: 0.1s;
+    transition-duration: 0.3s;
+    transition-delay: 0.3s;
+  
+  }
+  .header_img1:hover{
+    cursor: pointer;
+    /* margin-top: 10px;
+    transition: 0.3s;
+    transition-duration: 0.2s; */
+  }
+  .navbar_h1{
+    margin-left: 60px;
+    font-size: 25px;
+    margin-top: 17px;
+  }
+  .navbar_h1:hover{
+    cursor: pointer;
+  }
+  
+  .nav_language{
+    border: none;
+    width: 26px;
+    height: 27px;
+    margin-top: 21px;
+    color: #00979C;
+    background-color:white;
+    font-style: bold;
+    text-align: center;
+    justify-content:center;
+    border-radius: 4px;
+    transition: 0.1s;
+    transition-duration: 0.3s;
+    transition-delay: 0.3s;
+  
+  }
+  .nav_language:hover{
+    cursor: pointer; 
+  
+  }
+  
+  
+  .header_UZ_P{
+    margin-top: 3px;
+    font-weight: bolder;
+  }
+  
+  .headerImgSection{
+    height:auto;
+    width: auto;
+    border: 1px solid #000;
+  }
+  
+  .header_imgBig{
+    width: 1540px;
+    height: auto;
+  }

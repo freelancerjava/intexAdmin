@@ -1,0 +1,242 @@
+.Main{
+    width: 1540px;
+    height: auto;
+    border:none;
+
+}
+.mavsumiy_chegirmalar{
+    height: 100px;
+    color: white;
+    text-align:center;
+    background-color: #009398;
+    margin-top: 550px;
+    position: relative;
+    
+}
+.Mavsumiy_chegirmalarh1{
+
+        padding: 20px 0px;
+
+}
+.chegirma_card{
+    display: flex;
+    background-color: #009398;
+    border-bottom-left-radius: 45px;
+    border-top-right-radius: 45px;
+    text-align: center;
+    color: white;
+    display: flex;
+    width: 300px;
+    height: 140px;
+    font-family: 'Trebuchet MS';
+    display: flex;
+    margin-left: 60px;
+    transition: 0.3s;
+    transition-duration: 0.3s;
+    transition-delay: 0.1s;
+}
+
+.chegirmalar_wrapper{
+    border: none;
+    width:auto;
+    height: 140px;
+    display: flex;
+    justify-content:space-around;
+    margin-top: 40px;
+    justify-content:center;
+    margin-right: 70px;
+}
+.chegirma_card:hover{
+    margin-top: -5px;
+    transition: 0.3s;
+}
+
+.chegirma_word{
+    width: 300px;
+    margin-left: 0px;
+    border: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -5px;
+    /* border: 1px solid #000; */
+    }
+.chegirma_number{
+    width: 100px;
+    border: none;
+    text-align: center;
+
+}
+.chegirmah1{
+    font-size: 70px;
+    text-align: center;
+    margin-top: 5px;
+    margin-left: 2px;
+ 
+}
+.chegirma_wordP{
+    margin-top: -15px;
+    text-align: left;
+    font-size: 15px;
+}
+.chegirma_wordh3{
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+}
+.Category{
+    width: 1540px;
+    height: 100px;
+    background: #009398;
+    border: none;
+    margin-top: 550px;
+    position: relative;
+    /* z-index: 1000000; */
+}
+.Category_name{
+    text-align: center;
+    color: white;
+    font-size: 38px;
+    position: absolute;
+    left: 610px;
+
+    
+}
+.Category_product{
+    border: none;
+    width: 1000px;
+    height:auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 auto;    
+}
+.product{
+    width: 300px;
+    height: 320px;
+    border: none;
+    border-top-right-radius: 35px;
+    border-bottom-right-radius: 35px;
+    border-bottom-left-radius: 35px;
+    box-shadow: 1px -1px 10px 2px rgba(34, 60, 80, 0.2);
+    
+    margin-top: 50px;
+
+}
+.recomendent_product{
+    border:none;
+}
+.btn_recomendent{
+    width: 150px;
+    height: 35px;
+    background-color:#26B145;
+    color: white;
+    border: none;
+    border-bottom-right-radius: 12px;
+    font-size: 20px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* .btn_recomendent:hover{
+    background-color:  #48D52C ;
+} */
+.value_product{
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.number_value{
+    color: black;
+    font-size: 20px;
+    font-family:'Trebuchet MS';
+    font-weight: bold;
+}
+.btn_buyurtma{
+    width: 122px;
+    height: 35px;
+    border:none;
+    background-color: #FFE600;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    font-family:'Trebuchet MS';
+    font-weight: bolder;
+    font-size: 15px;
+    text-align: center;
+}
+.btn_buyurtma:hover{
+   background-color: #DFDF1E ;
+   transition: 0.3s; 
+}
+.Category_2{
+
+    width: 1540px;
+    height: 100px;
+    background: #009398;
+    border: none;
+    margin-top: 60px;
+    z-index: -10000000;
+    display: flex;
+    justify-content: center;
+    padding: 0px 20px !important;
+}
+
+.Catagory_2Product{
+    border: none;
+    width: 1000px;
+    height:auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 auto;
+}
+
+.Category_name_2{
+    text-align: center;
+    color: white;
+    margin-right: 65px;
+    font-size: 36px;
+}
+.Card_pruduct{
+    width: 300px;
+    height: 320px;
+    border: none;
+    border-top-right-radius: 35px;
+    border-bottom-right-radius: 35px;
+    border-bottom-left-radius: 35px;
+    box-shadow: 1px -1px 10px 2px rgba(34, 60, 80, 0.2);
+    margin-top: 50px;
+
+}
+
+.btn_cardRecomendet{
+    width: 150px;
+    height: 35px;
+    background-color:#FFD600;
+    color: white;
+    border: none;
+    border-bottom-right-radius: 12px;
+    font-size: 20px;
+    font-family:'Trebuchet MS';
+    font-weight: bolder;
+}
+.card2_img{
+    margin-left: 50px;
+    margin-top: 20px;
+}
+.skidka{
+    font-size: 18px;
+    margin-left: 10px;
+    margin-top: 50px;
+    color: rgb(126, 133, 139);
+}
+.value_card{
+    display: flex;
+    border: none;
+    align-items: center;
+    justify-content:space-around;
+    font-size: 20px;
+    font-family: 'Trebuchet MS';
+    font-weight: bold;
+    margin-top:-30px;
+
+}   
