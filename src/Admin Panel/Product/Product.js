@@ -33,7 +33,7 @@ const Product = () => {
                   <div className="main-content">
                      <div className="head-title">
 							   { state.data.map((item, i) => {
-							console.log(item.categoryname)
+							// console.log(item.categoryname)
                            return (
                               <span key={item.id}>
                                  <h1>{item.categoryname}</h1>

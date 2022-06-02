@@ -76,8 +76,8 @@ const Login = () => {
             headers: { "Content-Type": "application/json" },
             //    withCredentials: true
          });
-         console.log(response);
-         console.log(JSON.stringify(response?.data));
+        //  console.log(response);
+        //  console.log(JSON.stringify(response?.data));
          //  console.log(JSON.stringify(response));
          const accessToken = response?.data?.access;
          localStorage.setItem("AuthToken", JSON.stringify(response.data));
@@ -93,13 +93,11 @@ const Login = () => {
                },
             })
             .then((res) => {
-               //   console.log("res", res);
-               // debugger;
                dispatch(add_category(res.data));
-               console.log("resdata", res.data);
+            //    console.log("resdata", res.data);
             })
             .catch((error) => {
-               //   console.error(error);
+                //  console.error(error);
             });
 
          setAuth({ user, pwd, accessToken });

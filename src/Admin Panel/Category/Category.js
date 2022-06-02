@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CategoryBtn from "../AddCategory/CategoryAdd";
 import Header from "../Header/AdminHeader";
 import Menus from "../Menus/AdminMenu";
@@ -9,29 +9,50 @@ import Modal from "react-modal";
 // styling
 import "./Category.css";
 import axios from "../../api/axios";
-import { delete_category } from "../../Store/action";
+import { delete_category, edit_category } from "../../Store/action";
 
 const CATEGORY_URL_DELETE = "/category/";
 
 const CategoryPanel = (props) => {
-	const [deleteModal, setDeleteModal] = useState(false);
-	const [editModal, setEditModal] = useState(false);
-	
+   const [deleteModal, setDeleteModal] = useState(false);
+   const [editModal, setEditModal] = useState(false);
+   const [idItem, setIdItem] = useState(0);
+   const [categoryName, setCategoryName] = useState("");
+   const [categoryUz, setCategoryUz] = useState("");
+   const [categoryRu, setCategoryRu] = useState("");
 
    const dispatch = useDispatch();
 
    const state = useSelector((state) => state);
 
-   console.log(state);
-
-   const [idItem, setIdItem] = useState(0);
+//    console.log(state);
 
    const onSubmit = (id) => {
       setDeleteModal(true);
       setIdItem(id);
    };
+   const onSubmitEdit = (id, uz, ru, name) => {
+      setEditModal(true);
+      setIdItem(id);
+    //   console.log(idItem);
+      setCategoryName(name);
+      setCategoryUz(uz);
+      setCategoryRu(ru);
+   };
+   const onHandlerN = (e) => {
+    //   console.log(e.target.value);
+      setCategoryName(e.target.value);
+   };
+   const onHandlerU = (e) => {
+    //   console.log(e.target.value);
+      setCategoryUz(e.target.value);
+   };
+   const onHandlerR = (e) => {
+    //   console.log(e.target.value);
+      setCategoryRu(e.target.value);
+   };
 
-   const onDeletItem = (e) => {
+   const onDeletItem = () => {
       setDeleteModal(false);
       const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
       axios
@@ -46,6 +67,32 @@ const CategoryPanel = (props) => {
          .catch((error) => {
             //   console.error(error);
          });
+      setIdItem(0);
+   };
+   const onEditCategory = async () => {
+      setEditModal(false);
+      const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+      
+      let config = {
+         method: "put",
+         url: `${CATEGORY_URL_DELETE}${idItem}/`,
+         headers: {
+            Authorization: `Bearer ${tokenGet}`,
+            "Content-Type": "application/json",
+         },
+         data: JSON.stringify({ categoryname: categoryName, category_uz: categoryUz, category_ru: categoryRu }),
+      };
+
+      axios(config)
+         .then(function (response) {
+            let { id, categoryname, category_uz, category_ru } = response.data;
+            // console.log(id, categoryname, category_uz, category_ru);
+            dispatch(edit_category({id, categoryname, category_uz, category_ru}));
+         })
+         .catch(function (error) {
+            // console.log(error);
+         });
+      setIdItem(0);
    };
 
    return (
@@ -73,7 +120,7 @@ const CategoryPanel = (props) => {
                                  <li>{item.category_uz}</li>
                                  <li>{item.category_ru}</li>
                                  <li className="edit-icons">
-                                    <button onClick={() => setEditModal(true)} id="edit-btn">
+                                    <button onClick={() => onSubmitEdit(item.id, item.category_uz, item.category_ru, item.categoryname)} id="edit-btn">
                                        <i className="fa-solid fa-pencil"></i>
                                     </button>
                                     <button onClick={() => onSubmit(item.id)} id="delete-btn">
@@ -168,11 +215,13 @@ const CategoryPanel = (props) => {
                               <h2>Изменить категории</h2>
                               <i className="fa-solid fa-close btn-closeIcon fa-3x " onClick={() => setEditModal(false)}></i>
                               <form className="ModalForm">
-                                 <input type="text" placeholder="Category Name" />
+                                 <input onChange={onHandlerN} value={categoryName} type="text" placeholder="Category Name" />
                                  <br />
-                                 <input type="text" placeholder="Category uz" />
-                                 <input type="text" placeholder="Category ru" />
-                                 <button className="CategoryBtn">Изменить</button>
+                                 <input onChange={onHandlerU} value={categoryUz} type="text" placeholder="Category uz" />
+                                 <input onChange={onHandlerR} value={categoryRu} type="text" placeholder="Category ru" />
+                                 <button onClick={onEditCategory} className="CategoryBtn">
+                                    Изменить
+                                 </button>
                               </form>
                            </div>
                         </Modal>
