@@ -16,8 +16,8 @@ import axios from "../api/axios";
 import { useDispatch } from "react-redux";
 import { add_category } from "../Store/action";
 import { GetCats } from "./query";
-// const LOGIN_URL = "/token/";
-const LOGIN_URL = "/auth-token/";
+const LOGIN_URL = "/token/";
+// const LOGIN_URL = "/auth-token/";
 
 const CATEGORY_URL = "/category/";
 const Login = () => {

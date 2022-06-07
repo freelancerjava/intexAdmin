@@ -25,3 +25,17 @@
     text-decoration: none;
     color:#B4B4C6;
 }
+.actived {
+	/* font-size: 32px; */
+	color: #3f8c8e;
+
+	/* color: red; */
+
+
+	/* border: none;
+	border-bottom: 4px solid #3f8c8e;
+	margin: 0 15px;
+	cursor: pointer;
+	font-weight: bold;
+	background-color: transparent; */
+ }

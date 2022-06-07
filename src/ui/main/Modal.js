@@ -4,7 +4,6 @@ import { FcAssistant } from "react-icons/fc";
 import { GrClose } from "react-icons/gr";
 import { AiOutlineClose } from "react-icons/ai";
 import "../main/Modal.css";
-import InputName from "./mui/name.js";
 
 function Modals({ closeModal }) {
   return (

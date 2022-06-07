@@ -21,8 +21,8 @@ const Web = () => {
 
    const dispatch = useDispatch();
    const state = useSelector((state) => state);
+      console.log(state.info);
    let { address_ru, address_uz, instagram, tel, telegram, time_ru, time_uz, id } = state.info;
-//    console.log(state.info);
    //  GetCats(tokenGet);
 
    useEffect(() => {
@@ -33,7 +33,9 @@ const Web = () => {
                Authorization: `Bearer ${tokenGet}`,
             },
          })
-         .then((res) => {
+		  .then((res) => {
+			 console.log(res.data);
+			 
             dispatch(web_data(res.data[0]));
             // console.log("resdata", res.data[0]);
          })
@@ -110,7 +112,7 @@ const Web = () => {
 
       let config = {
          method: "patch",
-         url: "https://figma-uz.herokuapp.com/site/1/",
+         url: 'https://mamirovs.pythonanywhere.com/site/1/',
          headers: {
             Authorization: `Bearer ${tokenGet}`,
             "Content-Type": "application/json",
