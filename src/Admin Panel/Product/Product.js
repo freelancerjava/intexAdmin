@@ -30,8 +30,31 @@ import RamkaNaUz from "../AddProduct/CategoryModalInput/RamkaNaUz";
 import TsenaSkidkoy from "../AddProduct/CategoryModalInput/TsenaSkidkoy";
 
 const PRODUCT_URL = "/product/";
+const CATEGORY_URL = "/category/";
+
 
 const Product = () => {
+   // ******* //// 
+
+	useEffect(() => {
+		const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+		axios
+		.get(CATEGORY_URL, {
+		   headers: {
+			  Authorization: `Bearer ${tokenGet}`,
+		   },
+		})
+		.then((res) => {
+		   dispatch(add_category(res.data));
+		   //    console.log("resdata", res.data);
+		})
+		.catch((error) => {
+		   //  console.error(error);
+		});
+   },[])
+
+
+	// ********* ////
    const state = useSelector((state) => state);
    const dispatch = useDispatch();
    const [deleteModal, setDeleteModal] = useState(false);

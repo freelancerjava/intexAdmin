@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import CategoryBtn from "../AddCategory/CategoryAdd";
@@ -9,11 +9,36 @@ import Modal from "react-modal";
 // styling
 import "./Category.css";
 import axios from "../../api/axios";
-import { delete_category, edit_category } from "../../Store/action";
+import { add_category, delete_category, edit_category } from "../../Store/action";
 
 const CATEGORY_URL_DELETE = "/category/";
+const CATEGORY_URL = "/category/";
 
 const CategoryPanel = (props) => {
+
+	 // ******* //// 
+
+	 useEffect(() => {
+		const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+		axios
+		.get(CATEGORY_URL, {
+		   headers: {
+			  Authorization: `Bearer ${tokenGet}`,
+		   },
+		})
+		.then((res) => {
+		   dispatch(add_category(res.data));
+		   //    console.log("resdata", res.data);
+		})
+		.catch((error) => {
+		   //  console.error(error);
+		});
+   },[])
+  
+  
+	  // ********* ////
+
+
    const [deleteModal, setDeleteModal] = useState(false);
    const [editModal, setEditModal] = useState(false);
    const [idItem, setIdItem] = useState(0);

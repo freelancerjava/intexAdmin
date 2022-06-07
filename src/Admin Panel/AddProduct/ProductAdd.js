@@ -130,6 +130,7 @@ const ProductAdd = () => {
          });
 
       reset();
+      setBaseImage("");
    };
 
    //  men yozganim
