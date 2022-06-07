@@ -16,7 +16,9 @@ import axios from "../api/axios";
 import { useDispatch } from "react-redux";
 import { add_category } from "../Store/action";
 import { GetCats } from "./query";
-const LOGIN_URL = "/token/";
+// const LOGIN_URL = "/token/";
+const LOGIN_URL = "/auth-token/";
+
 const CATEGORY_URL = "/category/";
 const Login = () => {
    const { setAuth } = useAuth();
@@ -76,8 +78,8 @@ const Login = () => {
             headers: { "Content-Type": "application/json" },
             //    withCredentials: true
          });
-        //  console.log(response);
-        //  console.log(JSON.stringify(response?.data));
+         //  console.log(response);
+         //  console.log(JSON.stringify(response?.data));
          //  console.log(JSON.stringify(response));
          const accessToken = response?.data?.access;
          localStorage.setItem("AuthToken", JSON.stringify(response.data));
@@ -94,10 +96,10 @@ const Login = () => {
             })
             .then((res) => {
                dispatch(add_category(res.data));
-            //    console.log("resdata", res.data);
+               //    console.log("resdata", res.data);
             })
             .catch((error) => {
-                //  console.error(error);
+               //  console.error(error);
             });
 
          setAuth({ user, pwd, accessToken });

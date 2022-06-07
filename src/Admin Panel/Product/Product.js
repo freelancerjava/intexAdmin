@@ -6,16 +6,204 @@ import Menus from "../Menus/AdminMenu";
 //styling
 import "./Product.css";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { add_category } from "../../Store/action";
+import { add_category, product_data_delete, product_data_put } from "../../Store/action";
+import Modal from "react-modal";
+import { BiCategory } from "react-icons/bi";
+import { Controller, useForm } from "react-hook-form";
+import { ImListNumbered } from "react-icons/im";
+import Kolichstva from "../AddProduct/CategoryModalInput/Kolichstva";
+import { AiOutlineDollarCircle } from "react-icons/ai";
+import StartayaTsena from "../AddProduct/CategoryModalInput/StartayaTsena";
+import { FaExpandArrowsAlt } from "react-icons/fa";
+import RamkaNaRu from "../AddProduct/CategoryModalInput/RamakNaRu";
+import { GiResize } from "react-icons/gi";
+import Glubina from "../AddProduct/CategoryModalInput/Glubina";
+import RecommendRu from "../AddProduct/CategoryModalInput/RecommendRu";
+import RecommendUz from "../AddProduct/CategoryModalInput/RecomendUz";
+import Komalektatsiya from "../AddProduct/CategoryModalInput/Komalektatsiya";
+import KomalektatsiyaUz from "../AddProduct/CategoryModalInput/KomalekatsiyaUz";
+import Razmer from "../AddProduct/CategoryModalInput/Razmer";
+import SelectVariants from "../AddProduct/CategoryModalInput/MUIcategory";
+import RamkaNaUz from "../AddProduct/CategoryModalInput/RamkaNaUz";
+import TsenaSkidkoy from "../AddProduct/CategoryModalInput/TsenaSkidkoy";
 
-
+const PRODUCT_URL = "/product/";
 
 const Product = () => {
-	const state = useSelector((state) => state);
-	
-	console.log(state);
+   const state = useSelector((state) => state);
+   const dispatch = useDispatch();
+   const [deleteModal, setDeleteModal] = useState(false);
+   const [editModal, setEditModal] = useState(false);
+   const [idItem, setIdItem] = useState(0);
+   const [idCategory, setIdCategory] = useState(2);
+
+   const [product, setProduct] = useState(false);
+   const [eidtModalStateImg, setEditModalStateImg] = useState({});
+
+   //    setColorClass("red");
+
+   const onSubmit = (id) => {
+      setDeleteModal(true);
+      setIdItem(id);
+   };
+
+   const onDeletItem = () => {
+      setDeleteModal(false);
+      const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+      axios
+         .delete(`${PRODUCT_URL}${idItem}`, {
+            headers: {
+               Authorization: `Bearer ${tokenGet}`,
+            },
+         })
+         .then((res) => {
+            dispatch(product_data_delete(idItem));
+         })
+         .catch((error) => {
+            //   console.error(error);
+         });
+      setIdItem(0);
+   };
+
+   const onOpenModal = (data) => {
+      setIdItem(data.id);
+      //   setEditModalState(state.product.filter((item) => item.id === id)[0]);
+      let infoValue = state.product.filter((item) => item.id === data.id)[0];
+      setProduct(true);
+      setEditModalStateImg(infoValue.image);
+      setValue("infoValue", {
+         selectVariants: infoValue.category,
+         Kolichstva: infoValue.quantity,
+         RecommendRu: infoValue.recommend_ru,
+         RecommendUz: infoValue.recommend_uz,
+         glubina: infoValue.depth,
+         StartayaTsena: infoValue.price,
+         TsenaSkidkoy: infoValue.narx,
+         RamkaNaUz: infoValue.ramka_uz,
+         RamkaNaRu: infoValue.ramka_ru,
+         Razmer: infoValue.razmer,
+         Komalektatsiya: [infoValue.complectation_ru],
+         KomalektatsiyaUz: [infoValue.complectation_uz],
+      });
+      //   setValue(`images`, data.image);
+
+      //   console.log(infoValue.complectation_ru);
+   };
+
+   const {
+      register,
+      handleSubmit,
+      setValue,
+      watch,
+      control,
+      formState: { errors },
+   } = useForm({
+      defaultValues: {
+         selectVariants: "",
+         RecommendUz: "",
+         RecommendRu: "",
+         glubina: "",
+         Kolichstva: "",
+         StartayaTsena: "",
+         TsenaSkidkoy: "",
+         RamkaNaUz: "",
+         RamkaNaRu: "",
+         Razmer: "",
+         Komalektatsiya: [],
+         KomalektatsiyaUz: [],
+         images: null,
+         //  name: "Jasur",
+      },
+   });
+
+   const [fileImg, setFileImg] = useState("");
+   const [baseImage, setBaseImage] = useState("");
+   const [isImg, setIsImg] = useState(false);
+
+   const uploadImage = async (e) => {
+      setIsImg(true);
+      const file = e.target.files[0];
+      setFileImg(file);
+      const base64 = await convertBase64(file);
+      setBaseImage(base64);
+      //   console.log(isImg);
+      //   console.log(file);
+   };
+   const convertBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+         const fileReader = new FileReader();
+         fileReader.readAsDataURL(file);
+
+         fileReader.onload = () => {
+            resolve(fileReader.result);
+         };
+
+         fileReader.onerror = (error) => {
+            reject(error);
+         };
+      });
+   };
+
+   const onModalExit = () => {
+      setProduct(false);
+      setIsImg(false);
+   };
+
+   const ModalClose = async (e) => {
+      //   console.log("e", e);
+      setProduct(false);
+      setIsImg(false);
+
+      const token = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+
+      let axios = require("axios");
+      let FormData = require("form-data");
+      let data = new FormData();
+
+      data.append("category", e.infoValue.selectVariants);
+      data.append("name", e.infoValue.name);
+      data.append("price", e.infoValue.TsenaSkidkoy);
+      data.append("narx", e.infoValue.StartayaTsena);
+      data.append("quantity", e.infoValue.Kolichstva);
+      data.append("ramka_ru", e.infoValue.RamkaNaRu);
+      data.append("ramka_uz", e.infoValue.RamkaNaUz);
+      data.append("razmer", e.infoValue.Razmer);
+      data.append("depth", e.infoValue.glubina);
+      data.append("recommend_ru", e.infoValue.RecommendRu);
+      data.append("recommend_uz", e.infoValue.RecommendUz);
+      data.append("complectation_uz", e.infoValue.KomalektatsiyaUz.toString());
+      data.append("complectation_ru", e.infoValue.Komalektatsiya.toString());
+      data.append("image", fileImg);
+
+      let config = {
+         method: "put",
+         url: `https://figmasupport.pythonanywhere.com${PRODUCT_URL}${idItem}/`,
+         headers: {
+            Authorization: `Bearer ${token}`,
+         },
+         data: data,
+      };
+
+      axios(config)
+         .then(function (response) {
+            // console.log(response.data);
+            dispatch(product_data_put(response.data));
+         })
+         .catch(function (error) {
+            console.log(error);
+         });
+   };
+   const [colorCategory, setColorCategory] = useState("");
+
+   let colorActiv = "click";
+   const onCategorySubmit = (e, id) => {
+      setIdCategory(id);
+      //   console.log(e.target.id,id);
+      //   colorActiv = id == e.target.id ? "active" : "click";
+   };
+   console.log(colorActiv);
 
    return (
       <div className="wrapperProduct">
@@ -32,11 +220,18 @@ const Product = () => {
                   </div>
                   <div className="main-content">
                      <div className="head-title">
-							   { state.data.map((item, i) => {
-							// console.log(item.categoryname)
+                        {state.data.map((item, i) => {
+                           // console.log(item.categoryname)
                            return (
                               <span key={item.id}>
-                                 <h1>{item.categoryname}</h1>
+                                 <button
+                                    onClick={(e) => onCategorySubmit(e, item.id)}
+                                    className={`click ${item.id === idCategory ? "active" : ""}`}
+                                    id={item.id}
+                                 >
+                                    {/* {item.categoryname}/ */}
+                                    {item.c_name}
+                                 </button>
                               </span>
                            );
                         })}
@@ -51,69 +246,262 @@ const Product = () => {
                            <li>Глубина(см)</li>
                            <li>Действия</li>
                         </ul>
-                        <ul className="ul-body">
-                           <li>
-                              <img src="../../img.png" alt="img" />
-                           </li>
-                           <li>
-                              <p>1.800.000 сум</p>
-                              <h4>1.520.000 сум</h4>
-                           </li>
-                           <li>10</li>
-                           <li>Металлический</li>
-                           <li>2,7</li>
-                           <li>60</li>
-                           <li className="edit-icons">
-                              <button id="edit-btn">
-                                 <i className="fa-solid fa-pencil"></i>
+
+                        {state.product.map((item) => {
+                           if (item.category === idCategory) {
+                              return (
+                                 <ul key={item.id} className="ul-body">
+                                    <li>
+                                       <img src={item.image} alt="img" />
+                                    </li>
+                                    <li>
+                                       {/* <p>{item.old_price} сум</p>
+										  <h4>{item.dis_price} сум</h4> */}
+                                       <p>
+                                          <del>{item.narx} </del> сум
+                                       </p>
+                                       <h4>{item.price} сум</h4>
+                                    </li>
+                                    <li>{item.quantity}</li>
+                                    <li>{item.ramka_ru}</li>
+                                    {/* <li>{item.razmer_m}</li>
+									   <li>{item.razmer_sm}</li> */}
+                                    <li>{item.razmer}</li>
+                                    <li>{item.depth}</li>
+                                    <li className="edit-icons">
+                                       <button onClick={() => onOpenModal(item)} id="edit-btn">
+                                          <i className="fa-solid fa-pencil"></i>
+                                       </button>
+                                       <button onClick={() => onSubmit(item.id)} id="delete-btn">
+                                          <i className="fa-regular fa-trash-can"></i>
+                                       </button>
+                                    </li>
+                                 </ul>
+                              );
+                           }
+                        })}
+                        <Modal
+                           className="Category_Modal"
+                           isOpen={deleteModal}
+                           appElement={document.getElementById("root") || undefined}
+                           style={{
+                              overlay: {
+                                 position: "fixed",
+                                 left: "0",
+                                 top: "0",
+                                 bottom: "0",
+                                 right: "0",
+                                 width: "100%",
+                                 height: "100%",
+                                 backgroundColor: " rgb(0,0,0,0.5)",
+                              },
+                              content: {
+                                 position: "absolute",
+                                 top: "350px",
+                                 left: "300px",
+                                 right: "290px",
+                                 bottom: "350px",
+                                 border: "1px solid #ccc",
+                                 background: "#fff",
+                                 overflow: "hidden",
+                                 WebkitOverflowScrolling: "touch",
+                                 borderRadius: "25px",
+                                 outline: "none",
+                                 padding: "20px",
+                                 boxShadow: "-1px 6px 8px 0px rgba(34, 60, 80, 0.2)",
+                                 display: "flex",
+                                 justifyContent: "center",
+                                 alignItems: "center",
+                              },
+                           }}
+                        >
+                           <div className="Modal_navbar">
+                              <h2>Are you sure delete item</h2>
+                              <button id="yes_btn" onClick={() => onDeletItem()}>
+                                 Yes
                               </button>
-                              <button id="delete-btn">
-                                 <i className="fa-regular fa-trash-can"></i>
+                              <button id="no_btn" onClick={() => setDeleteModal(false)}>
+                                 No
                               </button>
-                           </li>
-                        </ul>
-                        <ul className="ul-body">
-                           <li>
-                              <img src="../../img.png" alt="img" />
-                           </li>
-                           <li>
-                              <p>1.800.000 сум</p>
-                              <h4>1.520.000 сум</h4>
-                           </li>
-                           <li>10</li>
-                           <li>Металлический</li>
-                           <li>2,7</li>
-                           <li>60</li>
-                           <li className="edit-icons">
-                              <button id="edit-btn">
-                                 <i className="fa-solid fa-pencil"></i>
-                              </button>
-                              <button id="delete-btn">
-                                 <i className="fa-regular fa-trash-can"></i>
-                              </button>
-                           </li>
-                        </ul>
-                        <ul className="ul-body">
-                           <li>
-                              <img src="../../img.png" alt="img" />
-                           </li>
-                           <li>
-                              <p>1.800.000 сум</p>
-                              <h4>1.520.000 сум</h4>
-                           </li>
-                           <li>10</li>
-                           <li>Металлический</li>
-                           <li>2,7</li>
-                           <li>60</li>
-                           <li className="edit-icons">
-                              <button id="edit-btn">
-                                 <i className="fa-solid fa-pencil"></i>
-                              </button>
-                              <button id="delete-btn">
-                                 <i className="fa-regular fa-trash-can"></i>
-                              </button>
-                           </li>
-                        </ul>
+                           </div>
+                        </Modal>
+                        <Modal
+                           className="ProductAdd"
+                           isOpen={product}
+                           appElement={document.getElementById("root") || undefined}
+                           style={{
+                              overlay: {
+                                 //   position: 'fixed',
+                                 left: "0",
+                                 top: "0",
+                                 bottom: "0",
+                                 right: "0",
+                                 width: "100%",
+                                 height: "100%",
+                                 backgroundColor: " rgb(0,0,0,0.5)",
+                              },
+                              content: {
+                                 position: "absolute",
+                                 top: "50px",
+                                 left: "230px",
+                                 right: "220px",
+                                 bottom: "50px",
+                                 border: "1px solid #ccc",
+                                 background: "#fff",
+                                 overflow: "auto",
+                                 WebkitOverflowScrolling: "touch",
+                                 borderRadius: "20px",
+                                 outline: "none",
+                                 padding: "20px",
+                                 boxShadow: "-1px 6px 8px 0px rgba(34, 60, 80, 0.2)",
+                              },
+                           }}
+                        >
+                           <div className="Modal_navbar">
+                              <h2 className="ModalProduct">Добавить Категория </h2>
+                              <i className="fa-solid fa-close btn-closeIcon fa-3x " onClick={onModalExit}></i>
+                              <form onSubmit={handleSubmit(ModalClose)}>
+                                 <section className="ProductAddSection">
+                                    <label className="Label_Product">
+                                       <p className="Pruduct_Add_P">+Add image</p>
+                                       <br />
+                                       <input
+                                          type="file"
+                                          //    name="images"
+                                          onChange={uploadImage}
+                                          accept="image/png, image/jpeg. image/webp"
+                                          className="ProductAddInput"
+                                       />
+                                       <div className="images">
+                                          <img src={isImg ? baseImage : eidtModalStateImg} width="200px" className="Product_Img" />
+                                       </div>
+                                    </label>
+                                 </section>
+
+                                 <div className="inputWrapper">
+                                    <div className="boxInput">
+                                       <BiCategory size="35" className="iconInput" />
+                                       <Controller
+                                          name="selectVariants"
+                                          control={control}
+                                          {...register("infoValue.selectVariants", { required: true })}
+                                          rules={{ required: true }}
+                                          render={({ field }) => <SelectVariants {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <ImListNumbered size="32" className="iconInput" />
+                                       <Controller
+                                          name="Kolichstva"
+                                          {...register("infoValue.Kolichstva", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <Kolichstva {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <AiOutlineDollarCircle size="32" className="iconInput" />
+                                       <Controller
+                                          name="StartayaTsena"
+                                          {...register("infoValue.StartayaTsena", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <StartayaTsena {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <AiOutlineDollarCircle size="32" className="iconInput" />
+                                       <Controller
+                                          name="TsenaSkidkoy"
+                                          {...register("infoValue.TsenaSkidkoy", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <TsenaSkidkoy {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <FaExpandArrowsAlt size="30" className="iconInput" />
+                                       <Controller
+                                          name="RamkaNaUz"
+                                          {...register("infoValue.RamkaNaUz", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <RamkaNaUz {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <FaExpandArrowsAlt size="30" className="iconInput" />
+                                       <Controller
+                                          name="RamkaNaRu"
+                                          {...register("infoValue.RamkaNaRu", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <RamkaNaRu {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <GiResize size="30" className="iconInput" />
+                                       <Controller
+                                          name="Razmer"
+                                          {...register("infoValue.Razmer", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <Razmer {...field} />}
+                                       />
+                                    </div>
+                                    <div className="boxInput">
+                                       <GiResize size="30" className="iconInput" />
+
+                                       <Controller
+                                          name="glubina"
+                                          {...register("infoValue.glubina", { required: true })}
+                                          control={control}
+                                          render={({ field }) => <Glubina {...field} />}
+                                       />
+                                    </div>
+
+                                    <div className="boxInput">
+                                       <Controller
+                                          name="RecommendRu"
+                                          {...register("infoValue.RecommendRu", { required: true })}
+                                          control={control}
+                                          rules={{ required: true }}
+                                          render={({ field }) => <RecommendRu {...field} />}
+                                       />
+                                    </div>
+                                    <div className="boxInput">
+                                       <Controller
+                                          name="RecommendUz"
+                                          {...register("infoValue.RecommendUz", { required: true })}
+                                          control={control}
+                                          rules={{ required: true }}
+                                          render={({ field }) => <RecommendUz {...field} />}
+                                       />
+                                    </div>
+
+                                    <Controller
+                                       name="Komalektatsiya"
+                                       //    {...register("infoValue.Komalektatsiya", { required: true })}
+                                       control={control}
+                                       //    rules={{ required: true }}
+                                       render={({ field }) => <Komalektatsiya {...field} />}
+                                    />
+                                    <Controller
+                                       name="KomalektatsiyaUz"
+                                       //    {...register("infoValue.KomalektatsiyaUz", { required: true })}
+                                       control={control}
+                                       //    rules={{ required: true }}
+                                       render={({ field }) => <KomalektatsiyaUz {...field} />}
+                                    />
+                                 </div>
+
+                                 <button type="submit" className="ProductAddBtn" onClick={() => ModalClose}>
+                                    изменить
+                                 </button>
+                              </form>
+                              <div className="div_footer"></div>
+                           </div>
+                        </Modal>
                      </div>
                   </div>
                </div>

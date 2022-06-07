@@ -28,10 +28,17 @@ const CategoryAdd = () => {
       };
       const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
       axios
-         .post(CATEGORY_URL, { categoryname: name, category_uz: nameUz, category_ru: nameRu }, config)
+		  .post(CATEGORY_URL,
+			//   { categoryname: name, category_uz: nameUz, category_ru: nameRu },
+			  { c_name: name, name_uz: nameUz, name_ru: nameRu },
+			  config)
          .then(function (response) {
             // console.log(response);
-            dispatch(add_category_one({ id: response.data.id, categoryname: name, category_uz: nameUz, category_ru: nameRu }));
+			 dispatch(add_category_one(
+				//  { id: response.data.id, categoryname: name, category_uz: nameUz, category_ru: nameRu }
+				 { id: response.data.id, c_name: name, name_uz: nameUz, name_ru: nameRu }
+			 
+			 ));
             // <Navigate to="/category" />;
          })
          .catch(function (error) {

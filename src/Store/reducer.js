@@ -1,6 +1,6 @@
 import { type } from "@testing-library/user-event/dist/type";
 
-export const AddCategory = (state = { data: [], info: [] }, action) => {
+export const AddCategory = (state = { data: [], info: [], product: [] }, action) => {
    if (action.type === "ADD_CATEGORY") {
       return {
          ...state,
@@ -36,6 +36,32 @@ export const AddCategory = (state = { data: [], info: [] }, action) => {
          ...state,
          info: action.newInfo,
       };
+   } else if (action.type === "PRODUCT_DATA") {
+      return {
+         ...state,
+         product: action.product,
+      };
+   } else if (action.type === "PRODUCT_DATA_POST") {
+      return {
+         ...state,
+         product: [...state.product, action.product],
+      };
+   } else if (action.type === "PRODUCT_DATA_DELETE") {
+      return {
+         ...state,
+         product: state.product.filter((item) => item.id != action.payload),
+      };
+   } else if (action.type === "PRODUCT_DATA_PUT") {
+      return {
+         ...state,
+         product: state.product.map((item, i) => {
+            if (item.id === action.newProduct.id) {
+               return action.newProduct;
+            }
+            return item;
+         }),
+      };
    }
+
    return state;
 };
