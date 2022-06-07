@@ -1,8 +1,8 @@
 .Main{
-    width: 1540px;
+    width: 100%;
     height: auto;
     border:none;
-
+    /* margin-top: 550px; */
 }
 .mavsumiy_chegirmalar{
     height: 100px;
@@ -10,9 +10,10 @@
     text-align:center;
     background-color: #009398;
     margin-top: 550px;
-    position: relative;
+    /* position: relative; */
     
 }
+
 .Mavsumiy_chegirmalarh1{
 
         padding: 20px 0px;
@@ -34,6 +35,7 @@
     transition: 0.3s;
     transition-duration: 0.3s;
     transition-delay: 0.1s;
+
 }
 
 .chegirmalar_wrapper{
@@ -83,32 +85,50 @@
     font-size: 20px;
     font-weight: bold;
 }
+
 .Category{
-    width: 1540px;
-    height: 100px;
-    background: #009398;
+    width: 100%;
+    height: auto;
+    background-color:white;
     border: none;
-    margin-top: 550px;
-    position: relative;
-    /* z-index: 1000000; */
+    /* margin-top: 550px; */
 }
+
+
+.Category__title{
+    width: 100%;
+    height: auto;
+    border: none;
+    margin-top: 0px;
+    position: relative;
+}
+.Category_name_Parend{
+    height: 100px;
+    background-color: #009398;
+    display: flex;
+    align-items: center;
+    }
 .Category_name{
     text-align: center;
     color: white;
-    font-size: 38px;
-    position: absolute;
-    left: 610px;
-
-    
+    font-size: 45px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 0 auto;    
 }
+
 .Category_product{
     border: none;
     width: 1000px;
-    height:auto;
+    height: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     margin: 0 auto;    
+    margin-top: 0px;
+    align-items: center;
+    padding: 5rem 0rem;
+    
+
 }
 .product{
     width: 300px;
@@ -118,8 +138,7 @@
     border-bottom-right-radius: 35px;
     border-bottom-left-radius: 35px;
     box-shadow: 1px -1px 10px 2px rgba(34, 60, 80, 0.2);
-    
-    margin-top: 50px;
+    /* margin-top: 50px;  */
 
 }
 .recomendent_product{
@@ -135,10 +154,6 @@
     font-size: 20px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-
-/* .btn_recomendent:hover{
-    background-color:  #48D52C ;
-} */
 .value_product{
     border: none;
     display: flex;
@@ -150,6 +165,7 @@
     font-size: 20px;
     font-family:'Trebuchet MS';
     font-weight: bold;
+    margin-top: 20px;
 }
 .btn_buyurtma{
     width: 122px;
@@ -162,9 +178,12 @@
     font-weight: bolder;
     font-size: 15px;
     text-align: center;
+    box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.2);
+    margin-top: 20px;
+
 }
 .btn_buyurtma:hover{
-   background-color: #DFDF1E ;
+   background-color: #d6d607 ;
    transition: 0.3s; 
 }
 .Category_2{

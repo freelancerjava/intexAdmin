@@ -76,3 +76,14 @@
     background-color:  #009398;
     text-transform: uppercase;
     }
+    
+
+    @media  only  screen and  (max-width:320px) {
+      /* /////Iphone SE */
+  
+    .Category_Modal{
+          background-color: red;
+    }
+
+  }
+    

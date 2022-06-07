@@ -16,7 +16,7 @@ function IntexWebsite() {
 		
 	// useEffect(() => {
 		const gets = async () => {
-			const response = await axios.post(LOGIN_URL, JSON.stringify({ username: "admin", password: "admin" }), {
+			const response = await axios.post(LOGIN_URL, JSON.stringify({ username: "bob", password: "bob" }), {
 			   headers: { "Content-Type": "application/json" },
 			});
 			console.log(response);

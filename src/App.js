@@ -20,7 +20,7 @@ import { add_category } from "./Store/action";
 
 const App = () => {
    return (
-      //   <div className="ContainerApp"> </div>
+        <div className="ContainerApp">
       <Routes>
          <Route path="/" element={<Layout />}>
             {/* public routes  */}
@@ -47,6 +47,7 @@ const App = () => {
             <Route path="*" element={<Missing />} />
          </Route>
       </Routes>
+      </div>
    );
 };
 
