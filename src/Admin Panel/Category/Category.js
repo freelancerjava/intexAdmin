@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import CategoryBtn from "../AddCategory/CategoryAdd";
@@ -9,21 +9,46 @@ import Modal from "react-modal";
 // styling
 import "./Category.css";
 import axios from "../../api/axios";
-import { delete_category, edit_category } from "../../Store/action";
+import { add_category, delete_category, edit_category } from "../../Store/action";
 
 const CATEGORY_URL_DELETE = "/category/";
+const CATEGORY_URL = "/category/";
 
 const CategoryPanel = (props) => {
+
+	 // ******* //// 
+
+	 useEffect(() => {
+		const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+		axios
+		.get(CATEGORY_URL, {
+		   headers: {
+			  Authorization: `Bearer ${tokenGet}`,
+		   },
+		})
+		.then((res) => {
+		   dispatch(add_category(res.data));
+		   //    console.log("resdata", res.data);
+		})
+		.catch((error) => {
+		   //  console.error(error);
+		});
+   },[])
+  
+  
+	  // ********* ////
+
+
    const [deleteModal, setDeleteModal] = useState(false);
    const [editModal, setEditModal] = useState(false);
    const [idItem, setIdItem] = useState(0);
-   //    const [categoryName, setCategoryName] = useState("");
-   //    const [categoryUz, setCategoryUz] = useState("");
-   //    const [categoryRu, setCategoryRu] = useState("");
+      const [categoryName, setCategoryName] = useState("");
+      const [categoryUz, setCategoryUz] = useState("");
+      const [categoryRu, setCategoryRu] = useState("");
 
-   const [c_name, setCategoryName] = useState("");
-   const [name_uz, setCategoryUz] = useState("");
-   const [name_ru, setCategoryRu] = useState("");
+//    const [c_name, setCategoryName] = useState("");
+//    const [name_uz, setCategoryUz] = useState("");
+//    const [name_ru, setCategoryRu] = useState("");
 
    const dispatch = useDispatch();
 
@@ -85,20 +110,20 @@ const CategoryPanel = (props) => {
             "Content-Type": "application/json",
          },
          data: JSON.stringify(
-            //   { categoryname: categoryName, category_uz: categoryUz, category_ru: categoryRu }
-            { c_name: c_name, name_uz: name_uz, name_ru: name_ru }
+			 // { c_name: c_name, name_uz: name_uz, name_ru: name_ru }
+              { categoryname: categoryName, category_uz: categoryUz, category_ru: categoryRu }
          ),
       };
 
       axios(config)
          .then(function (response) {
-            //  let { id, categoryname, category_uz, category_ru } = response.data;
-            let { id, c_name, name_uz, name_ru } = response.data;
+			 // let { id, c_name, name_uz, name_ru } = response.data;
+             let { id, categoryname, category_uz, category_ru } = response.data;
             // console.log(id, categoryname, category_uz, category_ru);
             dispatch(
                edit_category(
-                  //  { id, categoryname, category_uz, category_ru }
-                  { id, c_name, name_uz, name_ru }
+				   //   { id, c_name, name_uz, name_ru }
+                   { id, categoryname, category_uz, category_ru }
                )
             );
          })
@@ -130,15 +155,12 @@ const CategoryPanel = (props) => {
                         {state.data.map((item, i) => {
                            return (
                               <ul key={item.id} className="ul-body">
-                                 {/* <li>{item.category_uz}</li>
-								   <li>{item.category_ru}</li> */}
-                                 <li>{item.name_uz}</li>
-                                 <li>{item.name_ru}</li>
+                                 <li>{item.category_uz}</li>
+								   <li>{item.category_ru}</li>
+                                 {/* <li>{item.name_uz}</li>
+                                 <li>{item.name_ru}</li> */}
                                  <li className="edit-icons">
-                                    {/* <button onClick={() => onSubmitEdit(item.id, item.category_uz, item.category_ru, item.categoryname)} id="edit-btn">
-                                       <i className="fa-solid fa-pencil"></i>
-                                    </button> */}
-                                    <button onClick={() => onSubmitEdit(item.id, item.name_uz, item.name_uz, item.c_name)} id="edit-btn">
+                                    <button onClick={() => onSubmitEdit(item.id, item.category_uz, item.category_ru, item.categoryname)} id="edit-btn">
                                        <i className="fa-solid fa-pencil"></i>
                                     </button>
                                     <button onClick={() => onSubmit(item.id)} id="delete-btn">
@@ -233,13 +255,13 @@ const CategoryPanel = (props) => {
                               <h2>Изменить категории</h2>
                               <i className="fa-solid fa-close btn-closeIcon fa-3x " onClick={() => setEditModal(false)}></i>
                               <form className="ModalForm">
-                                 {/* <input onChange={onHandlerN} value={categoryName} type="text" placeholder="Category Name" /> */}
-                                 <input onChange={onHandlerN} value={c_name} type="text" placeholder="Category Name" />
+                                 <input onChange={onHandlerN} value={categoryName} type="text" placeholder="Category Name" />
+                                 {/* <input onChange={onHandlerN} value={c_name} type="text" placeholder="Category Name" /> */}
                                  <br />
-                                 {/* <input onChange={onHandlerU} value={categoryUz} type="text" placeholder="Category uz" />
-                                 <input onChange={onHandlerR} value={categoryRu} type="text" placeholder="Category ru" /> */}
-                                 <input onChange={onHandlerU} value={name_uz} type="text" placeholder="Category uz" />
-                                 <input onChange={onHandlerR} value={name_uz} type="text" placeholder="Category ru" />
+                                 <input onChange={onHandlerU} value={categoryUz} type="text" placeholder="Category uz" />
+                                 <input onChange={onHandlerR} value={categoryRu} type="text" placeholder="Category ru" />
+                                 {/* <input onChange={onHandlerU} value={name_uz} type="text" placeholder="Category uz" />
+                                 <input onChange={onHandlerR} value={name_uz} type="text" placeholder="Category ru" /> */}
 
                                  <button onClick={onEditCategory} className="CategoryBtn">
                                     Изменить

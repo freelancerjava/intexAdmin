@@ -30,16 +30,39 @@ import RamkaNaUz from "../AddProduct/CategoryModalInput/RamkaNaUz";
 import TsenaSkidkoy from "../AddProduct/CategoryModalInput/TsenaSkidkoy";
 
 const PRODUCT_URL = "/product/";
+const CATEGORY_URL = "/category/";
+
 
 const Product = () => {
+   // ******* //// 
+
+	useEffect(() => {
+		const tokenGet = JSON.parse(window.localStorage.getItem("AuthToken")).access;
+		axios
+		.get(CATEGORY_URL, {
+		   headers: {
+			  Authorization: `Bearer ${tokenGet}`,
+		   },
+		})
+		.then((res) => {
+		   dispatch(add_category(res.data));
+		   //    console.log("resdata", res.data);
+		})
+		.catch((error) => {
+		   //  console.error(error);
+		});
+   },[])
+
+
+	// ********* ////
    const state = useSelector((state) => state);
    const dispatch = useDispatch();
    const [deleteModal, setDeleteModal] = useState(false);
    const [editModal, setEditModal] = useState(false);
    const [idItem, setIdItem] = useState(0);
-   const [idCategory, setIdCategory] = useState(2);
+   const [idCategory, setIdCategory] = useState(3);
 
-   const [product, setProduct] = useState(false);
+   const [productEdit, setProductEdit] = useState(false);
    const [eidtModalStateImg, setEditModalStateImg] = useState({});
 
    //    setColorClass("red");
@@ -71,21 +94,21 @@ const Product = () => {
       setIdItem(data.id);
       //   setEditModalState(state.product.filter((item) => item.id === id)[0]);
       let infoValue = state.product.filter((item) => item.id === data.id)[0];
-      setProduct(true);
+      setProductEdit(true);
       setEditModalStateImg(infoValue.image);
       setValue("infoValue", {
          selectVariants: infoValue.category,
          Kolichstva: infoValue.quantity,
-         RecommendRu: infoValue.recommend_ru,
-         RecommendUz: infoValue.recommend_uz,
-         glubina: infoValue.depth,
-         StartayaTsena: infoValue.price,
-         TsenaSkidkoy: infoValue.narx,
+         RecommendRu: infoValue.recommendation_ru,
+         RecommendUz: infoValue.recommendation_uz,
+         glubina: infoValue.razmer_sm,
+         StartayaTsena: infoValue.dis_price,
+         TsenaSkidkoy: infoValue.old_price,
          RamkaNaUz: infoValue.ramka_uz,
          RamkaNaRu: infoValue.ramka_ru,
-         Razmer: infoValue.razmer,
-         Komalektatsiya: [infoValue.complectation_ru],
-         KomalektatsiyaUz: [infoValue.complectation_uz],
+         Razmer: infoValue.razmer_m,
+         Komalektatsiya: [infoValue.complekt_ru],
+         KomalektatsiyaUz: [infoValue.complekt_uz],
       });
       //   setValue(`images`, data.image);
 
@@ -147,13 +170,13 @@ const Product = () => {
    };
 
    const onModalExit = () => {
-      setProduct(false);
+	setProductEdit(false);
       setIsImg(false);
    };
 
    const ModalClose = async (e) => {
       //   console.log("e", e);
-      setProduct(false);
+      setProductEdit(false);
       setIsImg(false);
 
       const token = JSON.parse(window.localStorage.getItem("AuthToken")).access;
@@ -164,22 +187,22 @@ const Product = () => {
 
       data.append("category", e.infoValue.selectVariants);
       data.append("name", e.infoValue.name);
-      data.append("price", e.infoValue.TsenaSkidkoy);
-      data.append("narx", e.infoValue.StartayaTsena);
+      data.append("dis_price", e.infoValue.TsenaSkidkoy);
+      data.append("old_price", e.infoValue.StartayaTsena);
       data.append("quantity", e.infoValue.Kolichstva);
       data.append("ramka_ru", e.infoValue.RamkaNaRu);
       data.append("ramka_uz", e.infoValue.RamkaNaUz);
-      data.append("razmer", e.infoValue.Razmer);
-      data.append("depth", e.infoValue.glubina);
-      data.append("recommend_ru", e.infoValue.RecommendRu);
-      data.append("recommend_uz", e.infoValue.RecommendUz);
-      data.append("complectation_uz", e.infoValue.KomalektatsiyaUz.toString());
-      data.append("complectation_ru", e.infoValue.Komalektatsiya.toString());
+      data.append("razmer_m", e.infoValue.Razmer);
+      data.append("razmer_sm", e.infoValue.glubina);
+      data.append("recommendation_ru", e.infoValue.RecommendRu);
+      data.append("recommendation_uz", e.infoValue.RecommendUz);
+      data.append("complekt_uz", e.infoValue.KomalektatsiyaUz.toString());
+      data.append("complekt_ru", e.infoValue.Komalektatsiya.toString());
       data.append("image", fileImg);
 
       let config = {
          method: "put",
-         url: `https://figmasupport.pythonanywhere.com${PRODUCT_URL}${idItem}/`,
+         url: `https://mamirovs.pythonanywhere.com${PRODUCT_URL}${idItem}/`,
          headers: {
             Authorization: `Bearer ${token}`,
          },
@@ -195,15 +218,6 @@ const Product = () => {
             console.log(error);
          });
    };
-   const [colorCategory, setColorCategory] = useState("");
-
-   let colorActiv = "click";
-   const onCategorySubmit = (e, id) => {
-      setIdCategory(id);
-      //   console.log(e.target.id,id);
-      //   colorActiv = id == e.target.id ? "active" : "click";
-   };
-   console.log(colorActiv);
 
    return (
       <div className="wrapperProduct">
@@ -224,13 +238,8 @@ const Product = () => {
                            // console.log(item.categoryname)
                            return (
                               <span key={item.id}>
-                                 <button
-                                    onClick={(e) => onCategorySubmit(e, item.id)}
-                                    className={`click ${item.id === idCategory ? "active" : ""}`}
-                                    id={item.id}
-                                 >
-                                    {/* {item.categoryname}/ */}
-                                    {item.c_name}
+                                 <button onClick={() => setIdCategory(item.id)} className={`click ${item.id === idCategory ? "active" : ""}`} id={item.id}>
+                                    {item.categoryname}
                                  </button>
                               </span>
                            );
@@ -255,19 +264,14 @@ const Product = () => {
                                        <img src={item.image} alt="img" />
                                     </li>
                                     <li>
-                                       {/* <p>{item.old_price} сум</p>
-										  <h4>{item.dis_price} сум</h4> */}
                                        <p>
-                                          <del>{item.narx} </del> сум
+                                          <del>{item.old_price} </del> сум
                                        </p>
-                                       <h4>{item.price} сум</h4>
+										  <h4>{item.dis_price} сум</h4>
+										  
                                     </li>
-                                    <li>{item.quantity}</li>
-                                    <li>{item.ramka_ru}</li>
-                                    {/* <li>{item.razmer_m}</li>
-									   <li>{item.razmer_sm}</li> */}
-                                    <li>{item.razmer}</li>
-                                    <li>{item.depth}</li>
+                                    <li>{item.razmer_m}</li>
+                                    <li>{item.razmer_sm}</li>
                                     <li className="edit-icons">
                                        <button onClick={() => onOpenModal(item)} id="edit-btn">
                                           <i className="fa-solid fa-pencil"></i>
@@ -327,7 +331,7 @@ const Product = () => {
                         </Modal>
                         <Modal
                            className="ProductAdd"
-                           isOpen={product}
+                           isOpen={productEdit}
                            appElement={document.getElementById("root") || undefined}
                            style={{
                               overlay: {

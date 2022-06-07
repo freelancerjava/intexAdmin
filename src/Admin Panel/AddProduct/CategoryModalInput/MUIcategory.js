@@ -17,8 +17,7 @@ export default function SelectVariants(props) {
                {state.data.map((item) => {
                   return (
                      <MenuItem key={item.id} value={item.id}>
-						  {/* {item.categoryname} */}
-						  {item.c_name}
+						  {item.categoryname}
                      </MenuItem>
                   );
                })}

@@ -32,10 +32,11 @@ const ProductAdd = () => {
    const [product, setProduct] = useState(false);
 
    const {
-      register,
+      //   register,
       handleSubmit,
       watch,
       control,
+      reset,
       formState: { errors },
    } = useForm({
       defaultValues: {
@@ -64,9 +65,9 @@ const ProductAdd = () => {
       setFileImg(file);
       const base64 = await convertBase64(file);
       setBaseImage(base64);
-    //   console.log(file);
+      //   console.log(file);
    };
-//    console.log(fileImg);
+   //    console.log(fileImg);
    const convertBase64 = (file) => {
       return new Promise((resolve, reject) => {
          const fileReader = new FileReader();
@@ -85,7 +86,7 @@ const ProductAdd = () => {
    const PRODUCT_URL = "/product/";
 
    const ModalClose = async (e) => {
-    //   console.log("e", e);
+      //   console.log("e", e);
       setProduct(false);
 
       const token = JSON.parse(window.localStorage.getItem("AuthToken")).access;
@@ -96,22 +97,22 @@ const ProductAdd = () => {
 
       data.append("category", e.selectVariants);
       data.append("name", e.name);
-      data.append("price", e.TsenaSkidkoy);
-      data.append("narx", e.StartayaTsena);
+      data.append("dis_price", e.TsenaSkidkoy);
+      data.append("old_price", e.StartayaTsena);
       data.append("quantity", e.Kolichstva);
       data.append("ramka_ru", e.RamkaNaRu);
       data.append("ramka_uz", e.RamkaNaUz);
-      data.append("razmer", e.Razmer);
-      data.append("depth", e.glubina);
-      data.append("recommend_ru", e.RecommendRu);
-      data.append("recommend_uz", e.RecommendUz);
-      data.append("complectation_uz", e.KomalektatsiyaUz.toString());
-      data.append("complectation_ru", e.Komalektatsiya.toString());
+      data.append("razmer_m", e.Razmer);
+      data.append("razmer_sm", e.glubina);
+      data.append("recommendation_ru", e.RecommendRu);
+      data.append("recommendation_uz", e.RecommendUz);
+      data.append("complekt_uz", e.KomalektatsiyaUz.toString());
+      data.append("complekt_ru", e.Komalektatsiya.toString());
       data.append("image", fileImg);
 
       let config = {
          method: "post",
-         url: `https://figmasupport.pythonanywhere.com${PRODUCT_URL}`,
+         url: `https://mamirovs.pythonanywhere.com${PRODUCT_URL}`,
          headers: {
             Authorization: `Bearer ${token}`,
             // ...data.getHeaders(),
@@ -121,12 +122,15 @@ const ProductAdd = () => {
 
       axios(config)
          .then(function (response) {
-            // console.log(response.data);
+            console.log(response.data);
             dispatch(product_data_post(response.data));
          })
          .catch(function (error) {
             console.log(error);
          });
+
+      reset();
+      setBaseImage("");
    };
 
    //  men yozganim
